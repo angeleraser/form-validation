@@ -1,27 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useMemo, useState } from "react";
 import "./AppInput.css";
-import { InputError, InputValidator } from "../../utils/form-validator";
+import { InputError, InputValidatorConstructor } from "../../utils/form-validator";
 
 interface AppInputProps {
-  type?: "text" | "number";
   required?: boolean;
   onChange?(value: string): void;
   placeholder?: string;
   label?: string;
-  validator: InputValidator;
+  validator: InputValidatorConstructor;
   value?: string;
+  minLength?: number;
   onError?(error: InputError | undefined): void;
+  type?: "text" | "number";
 }
 
 export function AppInput(props: AppInputProps): React.ReactElement {
   const [hasTyped, setHasTyped] = useState(false);
 
+  const inputValidator = useMemo(function () {
+    return new props.validator({ label: props.label ?? "", minLength: props.minLength ?? 5 });
+  }, []);
+
   const error = useMemo(
     function () {
       if (!hasTyped) return undefined;
-      return props.validator.validate(props.value || "");
+      return inputValidator.validate(props.value || "");
     },
-    [props.validator, props.value, hasTyped]
+    [props.value, hasTyped]
   );
 
   return (

@@ -15,9 +15,9 @@ function App() {
   return (
     <>
       <form onSubmit={handleSubmit} action="">
-        <AppInput value={name} onChange={setName} validator={new NameInputValidator()} label="Name" />
-        <AppInput value={lastName} onChange={setLastName} validator={new LastnameInputValidator()} label="Lasname" />
-        <AppInput value={username} onChange={setUsername} validator={new NicknameInputValidator()} label="Username" />
+        <AppInput value={name} onChange={setName} validator={NameInputValidator} label="Name" minLength={10} />
+        <AppInput value={lastName} onChange={setLastName} validator={LastnameInputValidator} label="Lasname" />
+        <AppInput value={username} onChange={setUsername} validator={NicknameInputValidator} label="Username" />
         <button>Submit</button>
       </form>
     </>
